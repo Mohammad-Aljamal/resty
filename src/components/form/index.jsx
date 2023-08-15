@@ -34,20 +34,20 @@ import './form.scss';
 //   }
 // }
 
-function Form () {
+function Form (props) {
 
-    handleSubmit = e => {
+    const handleSubmit = e => {
     e.preventDefault();
     const formData = {
       method:'GET',
       url: 'https://pokeapi.co/api/v2/pokemon',
     };
-    this.props.handleApiCall(formData);
+    props.handleApiCall(formData);
   }
 
 return (
         <>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <label >
               <span>URL: </span>
               <input name='url' type='text' />
