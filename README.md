@@ -10,4 +10,4 @@ Currently, two official plugins are available:
 
 
 
-## [pull req](https://github.com/Mohammad-Aljamal/resty/pull/1) 
+## [pull req](https://github.com/Mohammad-Aljamal/resty/pull/3) 
