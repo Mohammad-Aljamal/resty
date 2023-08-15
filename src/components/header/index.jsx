@@ -11,7 +11,7 @@ import React from 'react';
 // }
 
 
-function Header() {
+function Header(props) {
     return (
       <header>
         <h1>RESTy</h1>
