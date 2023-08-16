@@ -11,7 +11,9 @@ Currently, two official plugins are available:
 # resty
 
 
-## [pull req](https://github.com/Mohammad-Aljamal/resty/pull/5) 
+## [pull req lab 26](https://github.com/Mohammad-Aljamal/resty/pull/5) 
+
+## [pull req lab 27](https://github.com/Mohammad-Aljamal/resty/pull/6) 
 
 
 ## [deployed url "code sendBox" ](https://sw2t37-5173.csb.app/)
