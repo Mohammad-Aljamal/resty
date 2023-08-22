@@ -1,74 +1,109 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import "./app.scss";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Form from "./components/form";
 import Results from "./components/results";
+import axios from "axios";
+import History from "../History";
 
+const initialState = {
+  data: null,
+  requestParams: {},
+  history: [],
+  loading: false,
+  error: false,
+};
 
-// class App extends React.Component {
+const reducer = (state, action) => {
+  const { type, payload } = action;
 
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       data: null,
-//       requestParams: {},
-//     };
-//   }
-//   callApi = (requestParams) => {
-//     // mock output
-//     const data = {
-//       count: 2,
-//       results: [
-//         {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-//         {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-//       ],
-//     };
-//     this.setState({data, requestParams});
-//   }
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <Header />
-//         <div>Request Method: {this.state.requestParams.method}</div>
-//         <div>URL: {this.state.requestParams.url}</div>
-//         <Form handleApiCall={this.callApi} />
-//         <Results data={this.state.data} />
-//         <Footer />
-//       </React.Fragment>
-//     );
-//   }
-// }
+  switch (type) {
+    case "FORM_DATA":
+      return {
+        ...state,
+        requestParams: payload,
+        history: [...state.history, payload],
+      };
 
+    case "STARTPAGE":
+      return {
+        ...state,
+        loading: true,
+      };
+    case "GETDATA":
+      return {
+        ...state,
+        loading: false,
+        data: {
+          results: [
+            { method: state.requestParams.method },
+            { url: state.requestParams.url },
+            { response: payload },
+          ],
+        },
+        history: [
+          ...state.history,
+          [
+            { method: state.requestParams.method },
+            { url: state.requestParams.url },
+            { response: payload },
+          ],
+        ],
+      };
+    case "ERROR":
+      return {
+        ...state,
+        error: true,
+      };
+
+    default:
+      return state;
+  }
+};
 
 function App() {
-  const [data, setData] = useState(null);
-  const [requestParams, setRequestParams] = useState({});
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (state.requestParams.method === "get") {
+      dispatch({
+        type: "STARTPAGE",
+      });
+
+      axios({
+        method: state.requestParams.method,
+        url: state.requestParams.url,
+      })
+        .then((res) => {
+          dispatch({ type: "GETDATA", payload: res.data });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          dispatch({ type: "ERROR" });
+        });
+    }
+  }, [state.requestParams]);
 
   function callApi(requestParams) {
-    const newData = {
-      results: [
-        // {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        // {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-        {method:requestParams.method},
-        {url:requestParams.url},
-        {response:requestParams.data},
-      ],
-    };
+    dispatch({
+      type: "FORM_DATA",
+      payload: requestParams,
+    });
 
-    setData(newData);
-    setRequestParams(requestParams);
+    // console.log(requestParams.method)
   }
 
   return (
     <>
-      {/* {console.log(requestParams)} */}
+      {/* {console.log(state.history)} */}
       <Header />
-      <div>Request Method: {requestParams.method}</div>
-      <div>URL: {requestParams.url}</div>
+      <div>Request Method: {state.requestParams.method}</div>
+      <div>URL: {state.requestParams.url}</div>
+      <History historyData={state.history} />
       <Form handleApiCall={callApi} />
-      <Results data={data} />
+      <Results data={state.data} />
+      {state.loading ? <p>loading</p> : null}
       <Footer />
     </>
   );

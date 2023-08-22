@@ -1,22 +1,42 @@
-import React from 'react';
-import './results.scss'
-// class Results extends React.Component {
-//   render() {
-//     return (
-//       <section>
-//         <pre>{this.props.data ? JSON.stringify(this.props.data, undefined, 2) : null}</pre>
-//       </section>
-//     );
-//   }
-// }
-
-
+import './result.scss'
 function Results(props) {
-    return (
+
+  return (
+    <>
       <section>
-        <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
+        <pre data-testid="resultTest" id="result">
+          {props.data ? JSON.stringify(props.data, undefined, 2) : null}
+          {/* {console.log(props.data)} */}
+{/* {props.data2&&(
+props.data2.map((item,index)=>{
+
+
+return(
+
+
+<div key={index}>
+
+  <p>UserId: {JSON.stringify(item.userId)}</p>
+  <p>URL: {JSON.stringify(item.body)}</p>
+</div>
+
+
+)
+
+})
+
+
+
+
+
+)} */}
+
+
+        </pre>
       </section>
-    );
+    </>
+  );
 }
 
 export default Results;
+

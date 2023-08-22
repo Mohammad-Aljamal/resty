@@ -1,23 +1,12 @@
-import React from 'react';
-import './header.scss'
+// import React from 'react';
 
-// class Header extends React.Component {
-//   render() {
-//     return (
-//       <header>
-//         <h1>RESTy</h1>
-//       </header>
-//     );
-//   }
-// }
-
-
-function Header(props) {
-    return (
+function Header() {
+  return (
+    <>
       <header>
-        <h1>RESTy</h1>
+        <h1 data-testid="headerTest">RESTy</h1>
       </header>
-    );
+    </>
+  );
 }
-
 export default Header;
